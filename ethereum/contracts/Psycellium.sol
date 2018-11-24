@@ -22,12 +22,6 @@ contract Psycellium{
     roles role;
   }
 
-  struct Ballot{
-    address[] director;
-    uint coopID;
-    address voter;
-  }
-
   mapping (address => Member) private members; // Get all members | Key: Address | Value: Member Struct [name, isActive, role]
   mapping (uint => Cooperative) private coops; // Get all Coops | Key: Uint | Value: Cooperative Struct []
 
@@ -78,42 +72,40 @@ contract Psycellium{
   public view returns (address[]){
     return coops[coopid].director;
   }
-/*
-  function voteDirector()
-  public {
-
-  }
-
-  function impeachDirector(){
-
-  }
-
-  function hireExecutive(){
-
-  }
-*/
 }
 
-contract Transactions{
+contract Transactions is Psycellium{
+
+  enum State{APPROVED, PENDING, REJECTED};
+
   struct Loan{
-    address borrower;
-    string issueDate;
-    bool isApproved;
+    uint coopID;
+    State state;
     uint amount;
+    uint repaid;
+    uint interest;
+    string issueDate;
+    string dueDate;
+    bool isActive;
   }
 
   struct Investment{
-    address investor;
+
+    address beneficiary;
     string issueDate;
-    bool isApproved;
+    State state;
     uint amount;
   }
 
-  struct BankLedger{
-    address member;
+  struct Ledger{
     string description;
     string date;
     uint balance;
+  }
+
+  struct Bank{
+    uint coopID;
+    mapping(uint => Ledger) private transactions;
   }
 
   struct HealthRecords{
@@ -128,52 +120,52 @@ contract Transactions{
     bool isOwned;
   }
 
-  struct MinorStocks{
+  mapping(address => Loan) private loans; // One Loan is to One Account
+  mapping(uint => Investment) private investments; // One Investment is to One Account
 
-  }
+  mapping( => Investment) private investments; // One Investment is to One Account
 
-  struct MajorStocks {
-
-  }
-
-  // Loans
-  mapping(address => Loan) private loans; // Get All Loans | Key: Address | Value: Loan Struct [borrower, issueDateis, Approved]
-  function approveLoan(address borrower)
-  private {
-    // Treasurer is the approver
-    require(members[msg.sender].role == roles.Treasurer);
-    require(!loans[borrower].isApproved, "Already Approved");
-    loans[borrower].isApproved =true;
-
-  }
-
-  function rejectLoan()
-  private {
-    require(members[msg.sender].role == roles.Treasurer);
-    require(loans[borrower].isApproved, "Already Rejected");
-    loans[borrower].isApproved =false;
-  }
-
-  // Investments
-  mapping(address => Investment) private investments; // Get All Investments | Key: Address | Value: Investment struct[]
-  function approveInvestment(address investor)
-  private {
-    // Raise: Who approves this?
-    require(!investments[investor].isApproved, "Already Approved");
-    investments[investor].isApproved = true;
-  }
-
-  function rejectInvestment(address investor)
-  private {
-    // Raise: Who approves this?
-    require(investments[investor].isApproved, "Already Rejected");
-    investments[investor].isApproved = false;
-  }
-
-  // Land
   mapping(uint => LandTitle) private Lands; // Get All Lands | Key: Uint | Value: Land Struct
   mapping (address => uint) private owner_land;    // Key: MemberAddress | Value: LandID
   mapping(uint => address) private land_owner; // Key: LandID | Value: MemberAddress
+
+  function hasActiveLoan(address borrower) returns(bool){
+    return loans[borrower].isActive;
+  }
+
+  function requestLoan(uint coopid, uint amount, uint interest){
+    loans[borrower] = Loan(coopid, State.PENDING, amount, 0, interest, '-', '-', true);
+  }
+
+  function repayLoan(address borrower, uint repay){
+    loans[borrower].amount = loans[borrower].amount - repay;
+  }
+
+  function cancelLoanRequest(address borrower)
+  public{
+    loans[borrower].isActive = False;
+  }
+
+  function approveLoan(address borrower)
+  public {
+    // Treasurer is the approver
+    /* require(members[msg.sender].role == roles.Treasurer);
+    require(!loans[borrower].isApproved, "Already Approved"); */
+    loans[borrower].state = State.APPROVED;
+  }
+
+  function rejectLoan()
+  public {
+    /* require(members[msg.sender].role == roles.Treasurer);
+    require(loans[borrower].isApproved, "Already Rejected"); */
+    loans[borrower].state = State.REJECTED;
+    loans[borrower].isActive = false;
+  }
+
+  function grantInvestment(uint id, address grantee)
+  public{
+
+  }
 
   function createLand(string landAddress, string landAddress, string landLocation, string landDescription, bool isOwned)
   private {
@@ -190,20 +182,20 @@ contract Transactions{
 
   function setOwnership(address _member, uint _landid)
   private {
-    require(!Lands[_landid].isOwned, "Already Owned");
+    /* require(!Lands[_landid].isOwned, "Already Owned"); */
     land_owner[_landid] = _member;
     Lands[_landid].isOwned = True;
   }
 
   function getOwner(uint _landid)
-  public view return(address){
-    require(Lands[_landid], "Not Owned");
+  public view returns(address){
+    /* require(Lands[_landid], "Not Owned"); */
     return land_owner[_landid];
   }
 
   function getLandOwned(address _member)
-  public view return(LandTitle){
-    require(owner_land[_member] != 0, "Doesn't Own a Land");
+  public view returns(LandTitle){
+    /* require(owner_land[_member] != 0, "Doesn't Own a Land"); */
     return lands[owner_land[_member]];
   }
 
@@ -220,13 +212,13 @@ contract Transactions{
   private {
     bankID++;
     uint id = bankID;
-    require(!bankAccount[msg.sender], "Already have an account");
+    /* require(!bankAccount[msg.sender], "Already have an account"); */
     bankLedgers[bankID] = BankLedger(msg.sender, _desc, _date, _bal);
   }
 
   function addBalance(address _member, string _desc, string _date)
   private {
-    require(!debit[_member].isApproved, "Not Approved");
+    /* require(!debit[_member].isApproved, "Not Approved"); */
     uint bankid = bankAccount[_member];
     uint bal = bankLedgers[bankid].balance;
     uint balDebit = debit[_member].amount;
@@ -237,7 +229,7 @@ contract Transactions{
 
   function deductBalance(address _member, string _desc, string _date)
   private {
-    require(!credit[_member].isApproved, "Not Approved");
+    /* require(!credit[_member].isApproved, "Not Approved"); */
     uint bankid = bankAccount[_member];
     uint bal = bankLedgers[bankid].balance;
     uint balCredit = credit[_member].amount;
@@ -247,7 +239,7 @@ contract Transactions{
   }
 
   function getBankAccount()
-  public return(BankLedger){
+  public returns(BankLedger){
     return bankLedgers[bankAccount[msg.sender]];
   }
 
