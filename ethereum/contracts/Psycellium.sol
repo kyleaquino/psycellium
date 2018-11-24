@@ -30,7 +30,7 @@ contract Psycellium{
 
   function setMemberName(string name) // Set Name, Make issued date 'NA', true
   public {
-    members[msg.sender] = Member(name,roles.Member);
+    members[msg.sender] = Member(name, true, roles.Member);
   }
 
   function setMember(address[] _members, uint _coopid)
@@ -76,7 +76,7 @@ contract Psycellium{
 
 contract Transactions is Psycellium{
 
-  enum State {APPROVED, PENDING, REJECTED};
+  enum State {APPROVED, PENDING, REJECTED}
 
   uint investID = 0;
 
@@ -92,6 +92,10 @@ contract Transactions is Psycellium{
   }
 
   struct Investment{
+    mapping (address => Grantee) grantees;
+  }
+
+  struct Grantee{
     string issueDate;
     uint amount;
   }
@@ -104,33 +108,23 @@ contract Transactions is Psycellium{
 
   struct Bank{
     uint coopID;
-    mapping(uint => Ledger) public transactions;
+    address coopAddress;
+    uint txnCounter;
+    mapping(uint => Ledger) transactions;
   }
 
-  struct HealthRecords{
-    string lastUpdated;
-    string record;
-  }
+  mapping(address => Loan) private loans;
+  mapping(address => Investment) private investments;
+  mapping(address => Bank) private accounts;
 
-  struct LandTitle{
-    string landAddress;
-    string landLocation;
-    string landDescription;
-    bool isOwned;
-  }
-
-  mapping(address => Loan) private loans; // One Loan is to One Account
-  mapping(uint => Investment) private investments; // One Investment is to One Account
-
-  mapping(uint => LandTitle) private Lands; // Get All Lands | Key: Uint | Value: Land Struct
-  mapping (address => uint) private owner_land;    // Key: MemberAddress | Value: LandID
-  mapping(uint => address) private land_owner; // Key: LandID | Value: MemberAddress
-
-  function hasActiveLoan(address borrower) returns(bool){
+  function hasActiveLoan(address borrower)
+  public returns(bool)
+  {
     return loans[borrower].isActive;
   }
 
-  function requestLoan(uint coopid, uint amount, uint interest){
+  function requestLoan(address borrower, uint coopid, uint amount, uint interest)
+  public {
     loans[borrower] = Loan(coopid, State.PENDING, amount, 0, interest, '-', '-', true);
   }
 
@@ -139,8 +133,8 @@ contract Transactions is Psycellium{
   }
 
   function cancelLoanRequest(address borrower)
-  public{
-    loans[borrower].isActive = False;
+  public {
+    loans[borrower].isActive = false;
   }
 
   function approveLoan(address borrower)
@@ -151,7 +145,7 @@ contract Transactions is Psycellium{
     loans[borrower].state = State.APPROVED;
   }
 
-  function rejectLoan()
+  function rejectLoan(address borrower)
   public {
     /* require(members[msg.sender].role == roles.Treasurer);
     require(loans[borrower].isApproved, "Already Rejected"); */
@@ -159,85 +153,34 @@ contract Transactions is Psycellium{
     loans[borrower].isActive = false;
   }
 
-  function grantInvestment(uint id, address grantee)
-  public{
-
+  function grantInvestment(address guarrantor ,address grantee, string issuedate, uint amt)
+  public {
+    investments[guarrantor].grantees[grantee].issueDate = issuedate;
+    investments[guarrantor].grantees[grantee].amount = amt;
   }
 
-  function createLand(string landAddress, string landAddress, string landLocation, string landDescription, bool isOwned)
-  private {
-    landID++;
-    uint id = landID;
-    Lands[id] = LandTitle(landAddress, landAddress, landLocation, landDescription, issueddate, false);
-  }
-
-  function getLands(uint landid)
-  public view returns(LandTitle){
-    // TODO Require Function
-    return lands[landid];
-  }
-
-  function setOwnership(address _member, uint _landid)
-  private {
-    /* require(!Lands[_landid].isOwned, "Already Owned"); */
-    land_owner[_landid] = _member;
-    Lands[_landid].isOwned = True;
-  }
-
-  function getOwner(uint _landid)
-  public view returns(address){
-    /* require(Lands[_landid], "Not Owned"); */
-    return land_owner[_landid];
-  }
-
-  function getLandOwned(address _member)
-  public view returns(LandTitle){
-    /* require(owner_land[_member] != 0, "Doesn't Own a Land"); */
-    return lands[owner_land[_member]];
-  }
-
-  // Bank Ledger Logics
-  mapping(uint => BankLedger) private bankLedgers; // Get All BankLedger | Key: Uint | Value: BankLedger Struct
-
-  mapping(address => uint) private bankAccount; // Key: MemberAddress | Value: BankID
-  mapping(uint => address) private bankOwner; // Key: BankID | Value: MemberAddress
-
-  mapping(address => Investment) private debit; // Key: MemberAddress | Value: Investment struct
-  mapping(address => Loan) private credit; // Key: MemberAddress | Value: Loan struct
-
-  function setBankAccount(string _desc, string _date, uint _bal)
-  private {
-    bankID++;
-    uint id = bankID;
+  function createBankAccount(uint coopid, address coopaddress, address user, string _date, uint _bal)
+  public {
     /* require(!bankAccount[msg.sender], "Already have an account"); */
-    bankLedgers[bankID] = BankLedger(msg.sender, _desc, _date, _bal);
+    accounts[user].coopID = coopid;
+    accounts[user].coopAddress = coopaddress;
   }
 
-  function addBalance(address _member, string _desc, string _date)
-  private {
-    /* require(!debit[_member].isApproved, "Not Approved"); */
-    uint bankid = bankAccount[_member];
-    uint bal = bankLedgers[bankid].balance;
-    uint balDebit = debit[_member].amount;
-    uint newBal = bal + balDebit;
-
-    bankLedgers[bankid] = BankLedger(_member, _desc, _date, newBal);
+  function credit(address user, string desc, string date, uint credited )
+  public {
+    accounts[user].txnCounter++;
+    uint txn = accounts[user].txnCounter;
+    accounts[user].transactions[txn].description = desc;
+    accounts[user].transactions[txn].date = date;
+    accounts[user].transactions[txn].balance += credited;
   }
 
-  function deductBalance(address _member, string _desc, string _date)
-  private {
-    /* require(!credit[_member].isApproved, "Not Approved"); */
-    uint bankid = bankAccount[_member];
-    uint bal = bankLedgers[bankid].balance;
-    uint balCredit = credit[_member].amount;
-    uint newBal = bal - balCredit;
-
-    bankLedgers[bankid] = BankLedger(_member, _desc, _date, newBal);
+  function debit(address user, string desc, string date, uint debited )
+  public {
+    accounts[user].txnCounter++;
+    uint txn = accounts[user].txnCounter;
+    accounts[user].transactions[txn].description = desc;
+    accounts[user].transactions[txn].date = date;
+    accounts[user].transactions[txn].balance += debited;
   }
-
-  function getBankAccount()
-  public returns(BankLedger){
-    return bankLedgers[bankAccount[msg.sender]];
-  }
-
 }
