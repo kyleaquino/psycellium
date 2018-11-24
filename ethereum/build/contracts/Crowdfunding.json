@@ -1,0 +1,97 @@
+{
+  "contractName": "Crowdfunding",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a723058204304b77a73bde2df89289f75c914ca23392eaeb55532a96f6af9c40c64d01db20029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a723058204304b77a73bde2df89289f75c914ca23392eaeb55532a96f6af9c40c64d01db20029",
+  "sourceMap": "26:26:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;26:26:1;;;;;;;",
+  "deployedSourceMap": "26:26:1:-;;;;;",
+  "source": "pragma solidity ^0.4.23;\n\ncontract Crowdfunding {\n\n}\n",
+  "sourcePath": "/mnt/Files/Documents/Workspace/Psycellium-Project/ethereum/contracts/crowdfunding/Crowdfunding.sol",
+  "ast": {
+    "absolutePath": "/mnt/Files/Documents/Workspace/Psycellium-Project/ethereum/contracts/crowdfunding/Crowdfunding.sol",
+    "exportedSymbols": {
+      "Crowdfunding": [
+        59
+      ]
+    },
+    "id": 60,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 58,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".23"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:1"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 59,
+        "linearizedBaseContracts": [
+          59
+        ],
+        "name": "Crowdfunding",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 60,
+        "src": "26:26:1"
+      }
+    ],
+    "src": "0:53:1"
+  },
+  "legacyAST": {
+    "absolutePath": "/mnt/Files/Documents/Workspace/Psycellium-Project/ethereum/contracts/crowdfunding/Crowdfunding.sol",
+    "exportedSymbols": {
+      "Crowdfunding": [
+        59
+      ]
+    },
+    "id": 60,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 58,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".23"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:1"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 59,
+        "linearizedBaseContracts": [
+          59
+        ],
+        "name": "Crowdfunding",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 60,
+        "src": "26:26:1"
+      }
+    ],
+    "src": "0:53:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-11-23T10:38:46.181Z"
+}

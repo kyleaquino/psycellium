@@ -1,0 +1,97 @@
+{
+  "contractName": "Loan",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a7230582025d8d590d83ddfc5d3bffa7a19804df08777da6f7ca0c6e3e67a6ace328c59fb0029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a7230582025d8d590d83ddfc5d3bffa7a19804df08777da6f7ca0c6e3e67a6ace328c59fb0029",
+  "sourceMap": "26:18:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;26:18:2;;;;;;;",
+  "deployedSourceMap": "26:18:2:-;;;;;",
+  "source": "pragma solidity ^0.4.23;\n\ncontract Loan {\n\n}\n",
+  "sourcePath": "/mnt/Files/Documents/Workspace/Psycellium-Project/ethereum/contracts/loan/Loan.sol",
+  "ast": {
+    "absolutePath": "/mnt/Files/Documents/Workspace/Psycellium-Project/ethereum/contracts/loan/Loan.sol",
+    "exportedSymbols": {
+      "Loan": [
+        62
+      ]
+    },
+    "id": 63,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 61,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".23"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:2"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 62,
+        "linearizedBaseContracts": [
+          62
+        ],
+        "name": "Loan",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 63,
+        "src": "26:18:2"
+      }
+    ],
+    "src": "0:45:2"
+  },
+  "legacyAST": {
+    "absolutePath": "/mnt/Files/Documents/Workspace/Psycellium-Project/ethereum/contracts/loan/Loan.sol",
+    "exportedSymbols": {
+      "Loan": [
+        62
+      ]
+    },
+    "id": 63,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 61,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".23"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:2"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 62,
+        "linearizedBaseContracts": [
+          62
+        ],
+        "name": "Loan",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 63,
+        "src": "26:18:2"
+      }
+    ],
+    "src": "0:45:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-11-23T10:38:46.181Z"
+}
