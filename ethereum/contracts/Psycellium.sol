@@ -16,6 +16,7 @@ contract Psycellium{
 
   struct Member{
     string name;
+    bool isActive;
     roles role;
   }
 
@@ -39,10 +40,6 @@ contract Psycellium{
   function setMember(address[] _members, uint _coopid)
   public {
     coop_members[_coopid] = _members;
-  }
-
-  function removeMember(){
-
   }
 
   function createCoop(string coopaddress, address[] director ,string coopname, string coopdesc, string issueddate)
@@ -79,7 +76,7 @@ contract Psycellium{
   public view returns (address[]){
     return coops[coopid].director;
   }
-
+/*
   function voteDirector()
   public {
 
@@ -92,12 +89,48 @@ contract Psycellium{
   function hireExecutive(){
 
   }
+*/
+}
 
-  function uploadConstitution(){
+contract Transactions{
+  struct Loan{
+    address borrower;
+    string issueDate;
+    bool isApproved;
 
   }
 
-  function reviseConstitution(){
-    
+  struct Investment{
+
   }
+
+  struct BankLedger{
+
+  }
+
+  struct HealthRecords{
+
+  }
+
+  struct LandTitle{
+
+  }
+
+  struct MinorStocks{
+
+  }
+
+  struct MajorStocks {
+
+  }
+
+  function approveLoan(){
+    // Treasure is the approver
+  }
+
+  function rejectLoan(){
+
+  }
+
+
 }
