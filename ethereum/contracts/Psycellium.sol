@@ -245,4 +245,9 @@ contract Transactions{
     bankLedgers[bankid] = BankLedger(_member, _desc, _date, newBal);
   }
 
+  function getBankAccount()
+  public return(BankLedger){
+    return bankLedgers[bankAccount[msg.sender]];
+  }
+
 }
