@@ -39,7 +39,7 @@ contract UserFactory{
   function CreateUser(string _username) public {
     address _id = msg.sender
     require(VerifyUser(_id)); //
-    userList[_id] = User(_username, true);
+    users[_id] = users.User(_username, true);
     emit CeateUser(id);
   }
 
