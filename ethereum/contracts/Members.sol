@@ -1,8 +1,5 @@
 pragma solidity ^0.4.23;
 
-import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
-import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
-
 contract Member {
 
   /* Identities for Blockchain Cooperatives */
@@ -50,7 +47,8 @@ contract Member {
   uint roleID = 0;
 
   /* Entity Lists */
-  mapping(address => User) public userList;
+  mapping(uint256 => address) public userList;
+  // mapping uint256 address
   mapping(address => Cooperative) public coopList;
   mapping(address => Membership) public memberList;
   mapping(address => CoopMemberRoles) public roleList;
@@ -60,8 +58,8 @@ contract Member {
   event SetCoop(uint _id);
 
   /* Contract Functions */
-  function setUser(string _name) public {
-    uint id = userID++;
+  function setUser(string _id) public {
+    require(userList[_id] != msg.sender); //
     userList[msg.sender] = User(id, _name);
     emit SetUser(id);
   }
@@ -87,4 +85,9 @@ contract Member {
   function totalUsers() public returns(uint256){
 
   }
+}
+
+
+contract MemberFactory{
+
 }
