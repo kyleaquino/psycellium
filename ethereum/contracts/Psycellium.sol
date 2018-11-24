@@ -1,89 +1,103 @@
-contract User{
-  struct data{
-    string username;
-    bool isExisting;
-  }
-}
+pragma solidity ^0.4.24;
 
-contract Cooperative{
-  enum CoopRoles { Member, Staff, Director, President, Manager, Secretary, Auditor, Treasurer }
+contract Psycellium{
+  enum roles { Member, Staff, Director, President, Manager, Secretary, Auditor, Treasurer }
 
-  struct data{
+  uint private coopID;
+
+  struct Cooperative{
+    string coopAddress;
+    address[] director;
     string coopName;
     string coopDescription;
     string issuedDate;
-    address createdby;
     bool isExisting;
   }
 
-  struct Membership {
-    address coopID;
-    string issuedDate;
-    address approvedBy;
+  struct Member{
+    string name;
+    roles role;
   }
 
-  struct Roles{
-    bytes32 memberID;
-    bytes32 coopID;
-    CoopRoles roles;
-    string issuedDate;
-    string expirationDate;
-  }
-}
-
-contract UserFactory{
-  mapping(address => User) public users;
-
-  /* Events */
-  event CreateUser(address _id);
-
-  function CreateUser(string _username) public {
-    address _id = msg.sender
-    require(VerifyUser(_id) != true);
-    users[_id] = User(_username, true);
-    emit CeateUser(id);
+  struct Ballot{
+    address[] director;
+    uint coopID;
+    address voter;
   }
 
-  function VerifyUser(address _id) returns (bool){
-    if(users[id].isExisting) throw;
-    return true;
-  }
-}
+  mapping (address => Member) private members;
+  mapping (uint => Cooperative) private coops;
 
-contract CoopFactory{
-  mapping(address => Cooperative) public coops;
+  mapping (uint => address[]) private coop_members; // Key: CoopID | Value: MemberAddresses
+  mapping (address => uint) private member_coop;    // Key: MemberAddress | Value: CoopID
 
-  /* Events */
-  event CreateCoop(address _id);
-
-  /* Functions */
-  function CreateCoop(address _coopid, string _coopname, string _coopdesc, string _issueddate) public {
-    address _userid = msg.sender
-    require(VerifyCoop(_id) != true);
-    coops[_coopid] = Cooperative(_coopname, _coopdesc, _issueddate, _userid, true);
-    emit SetUser(id);
+  function setMemberName(string name) // Set Name, Make issued date 'NA', true
+  public {
+    members[msg.sender] = Member(name,roles.Member);
   }
 
-  function addMember(address _userid, address _coopid, string _issuedate, address _approvedBy){
+  function setMember(address[] _members, uint _coopid)
+  public {
+    coop_members[_coopid] = _members;
   }
 
-  function assignRole(){
-    function VerifyUser(address _id) returns (bool){
-      if(users[id].isExisting) throw;
-      return true;
+  function removeMember(){
+
+  }
+
+  function createCoop(string coopaddress, address[] director ,string coopname, string coopdesc, string issueddate)
+  public {
+    coopID++;
+    uint id = coopID;
+    coops[id] = Cooperative(coopaddress, director, coopname, coopdesc, issueddate, true);
+  }
+
+  function setBoardOfDirectors(address[] directors, uint coopid )
+  public {
+    coops[coopid].director = directors;
+  }
+
+  function getCoopAddress(uint coopid)
+  public view returns (string){
+    return coops[coopid].coopAddress;
+  }
+
+  function getMembers(uint coopid)
+  public view returns(address[]){ // TODO Require Function
+    return coop_members[coopid];
+  }
+
+  function isCoopMember(address userid)
+  public view returns(bool){
+    if(member_coop[userid] == 0){
+      return false;
     }
-  }
-
-  function VerifyMember(){
-    function VerifyUser(address _id) returns (bool){
-      if(users[id].isExisting) throw;
-      return true;
-    }
-  }
-
-  function VerifyCoop(address _id) returns (bool){
-    if(coops[id].isExisting) throw;
     return true;
   }
 
+  function getBoardOfDirectors(uint coopid)
+  public view returns (address[]){
+    return coops[coopid].director;
+  }
+
+  function voteDirector()
+  public {
+
+  }
+
+  function impeachDirector(){
+
+  }
+
+  function hireExecutive(){
+
+  }
+
+  function uploadConstitution(){
+
+  }
+
+  function reviseConstitution(){
+    
+  }
 }
