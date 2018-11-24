@@ -117,7 +117,8 @@ contract Transactions{
   }
 
   struct HealthRecords{
-
+    string lastUpdated;
+    string record;
   }
 
   struct LandTitle{
