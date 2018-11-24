@@ -76,7 +76,9 @@ contract Psycellium{
 
 contract Transactions is Psycellium{
 
-  enum State{APPROVED, PENDING, REJECTED};
+  enum State {APPROVED, PENDING, REJECTED};
+
+  uint investID = 0;
 
   struct Loan{
     uint coopID;
@@ -90,10 +92,7 @@ contract Transactions is Psycellium{
   }
 
   struct Investment{
-
-    address beneficiary;
     string issueDate;
-    State state;
     uint amount;
   }
 
@@ -105,7 +104,7 @@ contract Transactions is Psycellium{
 
   struct Bank{
     uint coopID;
-    mapping(uint => Ledger) private transactions;
+    mapping(uint => Ledger) public transactions;
   }
 
   struct HealthRecords{
@@ -122,8 +121,6 @@ contract Transactions is Psycellium{
 
   mapping(address => Loan) private loans; // One Loan is to One Account
   mapping(uint => Investment) private investments; // One Investment is to One Account
-
-  mapping( => Investment) private investments; // One Investment is to One Account
 
   mapping(uint => LandTitle) private Lands; // Get All Lands | Key: Uint | Value: Land Struct
   mapping (address => uint) private owner_land;    // Key: MemberAddress | Value: LandID
