@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+
+{% block body %}
+<h1>Username: {{user}}</h1>
+<h2>Cooperative: {{info.coop}}</h2>
+
+<table border='1'>
+  <thead>
+      <td>Members</td>
+  </thead>
+  <tbody>
+    {% for mem in members %}
+    {% if mem.user != user %}
+    <tr>
+      <td>{{mem.user}}</td>
+
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+{% if info.coop %}
+<p>You already have a coop</p>
+<a href="quit">QUIT Coop</a>
+{% else %}
+<a href="createCoop">CREATE COOP</a>
+<a href="joincoop">Join Coop</a>
+{% endif %}
+<a href='logout'>LOGOUT</a>
+
+{% endblock %}

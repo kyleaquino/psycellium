@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Psycellium">
+    <meta name="author" content="Kyle Aquino">
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+
+    <script src="{% static 'vendor/ckeditor/classic-ckeditor.js' %}"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link type="text/css" rel="stylesheet" href="{% static 'vendor/bootstrap-vue/bootstrap.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'vendor/bootstrap-vue/bootstrap-vue.css' %}"/>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/all.css' %}" crossorigin="anonymous">
+
+    <!-- Global Style -->
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS --> {% block customCSS %}{% endblock %}
+
+    <title>{% block title %}Psycellium{% endblock %}</title>
+
+  </head>
+  <body id="page-top">
+
+    <div id="app">
+      {% block body%}{% endblock %}
+    </div>
+
+    <!-- Vue Plugins -->
+    <script src="{% static 'vendor/vue/vue.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-vue/polyfill.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-vue/bootstrap-vue.js' %}"></script>
+
+    <!-- Axios Plugin  -->
+    <script src="{% static 'vendor/axios/axios.js' %}"></script>
+
+    <!-- Custom JS -->{% block customJS %}{% endblock %}
+
+  </body>
+</html>
