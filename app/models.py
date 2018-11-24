@@ -33,3 +33,21 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.user)
+
+class Ledger(models.Model):
+    description = models.CharField(max_length=50, null=True)
+    date = models.DateField(null=True)
+    balance = models.IntegerField(null=False)
+
+class Bank(models.Model):
+    ledger = ManytoManyField(Ledger, on_delete=models.CASCADE,)
+
+class HealthRecord(models.Model):
+    patient = models.OneToOneField(auth_user,on_delete=models.CASCADE,)
+    record = models.CharField(max_length=100,null=True)
+    last_updated = models.DateField(null=True)
+
+class Investment(models.Model):
+    user = models.OneToOneField(auth_user,on_delete=models.CASCADE)
+    amount = models.IntegerField(max_length=100,null=False)
+    issue_date = models.DateField(null=True)
