@@ -5,6 +5,7 @@ contract Psycellium{
 
   uint private coopID;
   uint private landID;
+  uint private bankID;
 
   struct Cooperative{
     string coopAddress;
@@ -98,17 +99,21 @@ contract Transactions{
     address borrower;
     string issueDate;
     bool isApproved;
-
+    uint amount;
   }
 
   struct Investment{
     address investor;
     string issueDate;
     bool isApproved;
+    uint amount;
   }
 
   struct BankLedger{
-
+    address member;
+    string description;
+    string date;
+    uint balance;
   }
 
   struct HealthRecords{
@@ -132,7 +137,8 @@ contract Transactions{
 
   // Loans
   mapping(address => Loan) private loans; // Get All Loans | Key: Address | Value: Loan Struct [borrower, issueDateis, Approved]
-  function approveLoan(address borrower){
+  function approveLoan(address borrower)
+  private {
     // Treasurer is the approver
     require(members[msg.sender].role == roles.Treasurer);
     require(!loans[borrower].isApproved, "Already Approved");
@@ -140,7 +146,8 @@ contract Transactions{
 
   }
 
-  function rejectLoan(){
+  function rejectLoan()
+  private {
     require(members[msg.sender].role == roles.Treasurer);
     require(loans[borrower].isApproved, "Already Rejected");
     loans[borrower].isApproved =false;
@@ -148,25 +155,27 @@ contract Transactions{
 
   // Investments
   mapping(address => Investment) private investments; // Get All Investments | Key: Address | Value: Investment struct[]
-  function approveInvestment(address investor){
+  function approveInvestment(address investor)
+  private {
     // Raise: Who approves this?
     require(!investments[investor].isApproved, "Already Approved");
     investments[investor].isApproved = true;
   }
 
-  function rejectInvestment(address investor){
+  function rejectInvestment(address investor)
+  private {
     // Raise: Who approves this?
     require(investments[investor].isApproved, "Already Rejected");
     investments[investor].isApproved = false;
   }
 
   // Land
-  mapping(uint => LandTitle) private Lands // Get All Lands | Key: Uint | Value: Land Struct
+  mapping(uint => LandTitle) private Lands; // Get All Lands | Key: Uint | Value: Land Struct
   mapping (address => uint) private owner_land;    // Key: MemberAddress | Value: LandID
   mapping(uint => address) private land_owner; // Key: LandID | Value: MemberAddress
 
   function createLand(string landAddress, string landAddress, string landLocation, string landDescription, bool isOwned)
-  public {
+  private {
     landID++;
     uint id = landID;
     Lands[id] = LandTitle(landAddress, landAddress, landLocation, landDescription, issueddate, false);
@@ -179,7 +188,7 @@ contract Transactions{
   }
 
   function setOwnership(address _member, uint _landid)
-  public(){
+  private {
     require(!Lands[_landid].isOwned, "Already Owned");
     land_owner[_landid] = _member;
     Lands[_landid].isOwned = True;
@@ -197,5 +206,43 @@ contract Transactions{
     return lands[owner_land[_member]];
   }
 
+  // Bank Ledger Logics
+  mapping(uint => BankLedger) private bankLedgers; // Get All BankLedger | Key: Uint | Value: BankLedger Struct
+
+  mapping(address => uint) private bankAccount; // Key: MemberAddress | Value: BankID
+  mapping(uint => address) private bankOwner; // Key: BankID | Value: MemberAddress
+
+  mapping(address => Investment) private debit; // Key: MemberAddress | Value: Investment struct
+  mapping(address => Loan) private credit; // Key: MemberAddress | Value: Loan struct
+
+  function setBankAccount(string _desc, string _date, uint _bal)
+  private {
+    bankID++;
+    uint id = bankID;
+    require(!bankAccount[msg.sender], "Already have an account");
+    bankLedgers[bankID] = BankLedger(msg.sender, _desc, _date, _bal);
+  }
+
+  function addBalance(address _member, string _desc, string _date)
+  private {
+    require(!debit[_member].isApproved, "Not Approved");
+    uint bankid = bankAccount[_member];
+    uint bal = bankLedgers[bankid].balance;
+    uint balDebit = debit[_member].amount;
+    uint newBal = bal + balDebit;
+
+    bankLedgers[bankid] = BankLedger(_member, _desc, _date, newBal);
+  }
+
+  function deductBalance(address _member, string _desc, string _date)
+  private {
+    require(!credit[_member].isApproved, "Not Approved");
+    uint bankid = bankAccount[_member];
+    uint bal = bankLedgers[bankid].balance;
+    uint balCredit = credit[_member].amount;
+    uint newBal = bal - balCredit;
+
+    bankLedgers[bankid] = BankLedger(_member, _desc, _date, newBal);
+  }
 
 }
