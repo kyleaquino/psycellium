@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block customCSS %}
+    <link href="{% static 'css/homepage.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+<h1>List of Users</h1>
+<table border="1">
+  <thead>
+    <td>Member</td>
+    <td>Cooperative</td>
+  </thead>
+  <tbody>
+    {% for profile in profile %}
+    <tr>
+      <td>{{profile.user}}</td>
+      <td>
+        {{ profile.coop }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href='login'>LOGIN</a>
+<a href="register">REGISTER</a>
+
+
+{% endblock %}
