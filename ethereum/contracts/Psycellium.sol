@@ -12,7 +12,8 @@ contract Cooperative{
     string coopName;
     string coopDescription;
     string issuedDate;
-    address[] createdby;
+    address createdby;
+    bool isExisting;
   }
 
   struct Membership {
@@ -31,15 +32,15 @@ contract Cooperative{
 }
 
 contract UserFactory{
-  mapping(uint256 => User) public users;
+  mapping(address => User) public users;
 
   /* Events */
   event CreateUser(address _id);
 
   function CreateUser(string _username) public {
     address _id = msg.sender
-    require(VerifyUser(_id)); //
-    users[_id] = users.User(_username, true);
+    require(VerifyUser(_id) != true);
+    users[_id] = User(_username, true);
     emit CeateUser(id);
   }
 
@@ -50,35 +51,38 @@ contract UserFactory{
 }
 
 contract CoopFactory{
-  mapping(uint256 => Cooperative) public coops;
+  mapping(address => Cooperative) public coops;
 
   /* Events */
   event CreateCoop(address _id);
 
   /* Functions */
-  function CreateCoop(string _username) public {
-    address _id = msg.sender
-    require(users[_id] != userList[_id]); //
-    userList[_id] = User(_username, true);
+  function CreateCoop(address _coopid, string _coopname, string _coopdesc, string _issueddate) public {
+    address _userid = msg.sender
+    require(VerifyCoop(_id) != true);
+    coops[_coopid] = Cooperative(_coopname, _coopdesc, _issueddate, _userid, true);
     emit SetUser(id);
   }
 
   function addMember(address _userid, address _coopid, string _issuedate, address _approvedBy){
-    bytes32 userID;
-    bytes32 coopID;
-    string issuedDate;
   }
 
   function assignRole(){
-
+    function VerifyUser(address _id) returns (bool){
+      if(users[id].isExisting) throw;
+      return true;
+    }
   }
 
   function VerifyMember(){
-
+    function VerifyUser(address _id) returns (bool){
+      if(users[id].isExisting) throw;
+      return true;
+    }
   }
 
   function VerifyCoop(address _id) returns (bool){
-    if(users[id].isExisting) throw;
+    if(coops[id].isExisting) throw;
     return true;
   }
 
