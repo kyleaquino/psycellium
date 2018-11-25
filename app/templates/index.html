@@ -9,7 +9,7 @@
 
 {% block body %}
 <h1>List of Users</h1>
-<table border="1">
+<table class="table table-striped">
   <thead>
     <td>Member</td>
     <td>Cooperative</td>
@@ -25,8 +25,8 @@
     {% endfor %}
   </tbody>
 </table>
-<a href='login'>LOGIN</a>
-<a href="register">REGISTER</a>
+<a class="btn btn-primary" href="login">Login</a>
+<a class="btn btn-primary" href="register">Register</a>
 
 
 {% endblock %}

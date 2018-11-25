@@ -21,12 +21,22 @@ class RegisterForm(UserCreationForm):
 class CreateCoopForm(forms.ModelForm):
     class Meta:
         model = Cooperative
-        fields = ('name',)
+        fields = ('name','description')
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class' : 'form-control', 'placeholder': 'Name'}),
+            'description': forms.TextInput(attrs={'class' : 'form-control', 'placeholder': 'Description'}),
+        }
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('eth_address',)
+        fields = ('first_name','last_name')
+
+        widgets ={
+            'first_name': forms.TextInput(attrs={'class' : 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class' : 'form-control'}),
+        }
 
 class JoinCoopForm(forms.ModelForm):
     class Meta:
