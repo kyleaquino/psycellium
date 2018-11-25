@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 
 from .models import Cooperative, Profile
 
-
-
 class LoginForm(forms.Form):
     username = forms.CharField(label='username',)
     password = forms.CharField(label='password', widget=forms.PasswordInput())
