@@ -1,4 +1,4 @@
-import web3
+import oracle as web3
 
 ETH_DIR = './../../ethereum/contracts/'
 contract_file = 'Transactions.sol'
@@ -85,11 +85,11 @@ def grantInvestment(guarantor, grantee, issuedata, amt):
     tx_hash, tx_receipt = web3.tx_generate(contract, w3)
     transactions = web3.contract_object(w3, tx_receipt.contractAddress,interface['abi'])
 
-    transactions.functions.grantInvestment(guarantor, grantee, issuedata, amt).transact()
+    result=transactions.functions.grantInvestment(guarantor, grantee, issuedata, amt).transact().call()
 
     # result = transactions.functions.grantInvestment(guarantor, grantee, issuedata, amt).call()
     print(w3.eth.waitForTransactionReceipt(tx_hash))
-    # print(result)
+    print(result)
 
 grantInvestment('0xeCDB33423EEb354aDE809a17c53D1325626c5219', '0xa8Bd814a4a325d0092416Ac7574fFb5868899B9e', '2015-08-19', 100)
 

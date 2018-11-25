@@ -86,20 +86,16 @@ contract Transactions {
   }
 
   function grantInvestment(address guarrantor ,address grantee, string issuedate, uint amt)
-  public view returns (uint){
+  public returns (uint){
     investments[guarrantor].grantees[grantee].issueDate = issuedate;
     investments[guarrantor].grantees[grantee].amount = amt;
-
-    return investments[guarrantor].grantees[grantee].amount;
   }
 
   function createBankAccount(uint coopid, address coopaddress, address user)
-  public view returns (uint){
+  public returns (uint){
     /* require(!bankAccount[msg.sender], "Already have an account"); */
     accounts[user].coopID = coopid;
     accounts[user].coopAddress = coopaddress;
-
-    return accounts[user].coopID;
   }
 
   function credit(address user, string desc, string date, uint credited )
