@@ -26,9 +26,13 @@
 
   </head>
   <body id="page-top">
+    <div class="container-fluid">
 
-    <div id="app">
-      {% block body%}{% endblock %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-3 text-center bg-light text-dark">
+          {% block body%}{% endblock %}
+        </div>
+      </div>
     </div>
 
     <!-- Vue Plugins -->

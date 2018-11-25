@@ -2,11 +2,11 @@
 
 
 {% block body %}
-<h1>Username: {{user}}</h1>
+<h1>{{user}}</h1>
 <h2>Cooperative: {{info.coop}}</h2>
 
-<table border='1'>
-  <thead>
+<table class="table table-hover">
+  <thead class="thead-dark">
       <td>Members</td>
   </thead>
   <tbody>
@@ -20,13 +20,25 @@
     {% endfor %}
   </tbody>
 </table>
-{% if info.coop %}
-<p>You already have a coop</p>
-<a href="quit">QUIT Coop</a>
-{% else %}
-<a href="createCoop">CREATE COOP</a>
-<a href="joincoop">Join Coop</a>
-{% endif %}
-<a href='logout'>LOGOUT</a>
+<div class="row">
+  {% if info.coop %}
+  <div class="col-md-4">
+      <p>You already have a coop</p>
+  </div>
+  <div class="col-md-4">
+    <a class="btn btn-warning" href="quit">Quit</a>
+  </div>
+  {% else %}
+  <div class="col-md-4">
+    <a class="btn btn-success" href="createCoop">Create Coop</a>
+  </div>
+  <div class="col-md-4">
+    <a class="btn btn-info" href="joincoop">Join Coop</a>
+  </div>
+  {% endif %}
+  <div class="col-md-4">
+    <a class="btn btn-danger" href="logout">Logout</a>
+  </div>
+</div>
 
 {% endblock %}

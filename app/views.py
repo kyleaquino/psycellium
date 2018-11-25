@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 
+from django.contrib import admin
+
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
@@ -33,10 +35,12 @@ def profile(request):
 
 def CreateCoop(request):
     form = CreateCoopForm()
+    david = {'id' : '1111', 'address' : 'Address to'}
     if request.method == 'POST':
         form = CreateCoopForm(request.POST)
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            instance.save(parameters = david)
             return redirect('/profile')
         else:
             form = CreateCoopForm()
@@ -87,9 +91,10 @@ def register(request):
         profileform = ProfileForm(request.POST)
         if form.is_valid() and profileform.is_valid():
             profile = profileform.save(commit=False)
+            parameters = {'id': '1111', 'address': 'This is the address'}
             user = form.save()
             profile.user = user
-            profile.save()
+            profile.save(parameters)
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
