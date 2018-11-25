@@ -14,6 +14,7 @@ contract Psycellium{
     string coopDescription;
     string issuedDate;
     bool isExisting;
+    // Capital
   }
 
   struct Member{
@@ -72,115 +73,82 @@ contract Psycellium{
   public view returns (address[]){
     return coops[coopid].director;
   }
+<<<<<<< current
+=======
+/*
+  function voteDirector()
+  public {
+
+  }
+
+  function impeachDirector(){
+
+  }
+
+  function hireExecutive(){
+
+  }
+*/
 }
 
-contract Transactions is Psycellium{
-
-  enum State {APPROVED, PENDING, REJECTED}
-
-  uint investID = 0;
-
-  struct Loan{
-    uint coopID;
-    State state;
-    uint amount;
-    uint repaid;
-    uint interest;
+contract Transactions{
+  enum LoanState{ACCEPTED, PENDING, REJECTED}
+  struct Loan{ // One Member One Loan
+    address borrower;
+    LoanState state;
     string issueDate;
     string dueDate;
-    bool isActive;
+    uint rate;
   }
 
   struct Investment{
-    mapping (address => Grantee) grantees;
+
   }
 
-  struct Grantee{
-    string issueDate;
-    uint amount;
+  struct BankLedger{
+
   }
 
-  struct Ledger{
-    string description;
-    string date;
-    uint balance;
+  struct HealthRecords{
+
   }
 
-  struct Bank{
-    uint coopID;
-    address coopAddress;
-    uint txnCounter;
-    mapping(uint => Ledger) transactions;
+  struct LandTitle{
+
   }
 
-  mapping(address => Loan) private loans;
-  mapping(address => Investment) private investments;
-  mapping(address => Bank) private accounts;
+  struct MinorStocks{
 
-  function hasActiveLoan(address borrower)
-  public returns(bool)
-  {
-    return loans[borrower].isActive;
   }
 
-  function requestLoan(address borrower, uint coopid, uint amount, uint interest)
-  public {
-    loans[borrower] = Loan(coopid, State.PENDING, amount, 0, interest, '-', '-', true);
+  struct MajorStocks {
+
   }
 
-  function repayLoan(address borrower, uint repay){
-    loans[borrower].amount = loans[borrower].amount - repay;
+  function approveLoan(){
+    // Treasure is the approver
   }
 
-  function cancelLoanRequest(address borrower)
-  public {
-    loans[borrower].isActive = false;
+  function hasActiveLoan(){
+
   }
 
-  function approveLoan(address borrower)
-  public {
-    // Treasurer is the approver
-    /* require(members[msg.sender].role == roles.Treasurer);
-    require(!loans[borrower].isApproved, "Already Approved"); */
-    loans[borrower].state = State.APPROVED;
+  function requestLoan(){
+
   }
 
-  function rejectLoan(address borrower)
-  public {
-    /* require(members[msg.sender].role == roles.Treasurer);
-    require(loans[borrower].isApproved, "Already Rejected"); */
-    loans[borrower].state = State.REJECTED;
-    loans[borrower].isActive = false;
+  function cancelLoanRequest(){
+
   }
 
-  function grantInvestment(address guarrantor ,address grantee, string issuedate, uint amt)
-  public {
-    investments[guarrantor].grantees[grantee].issueDate = issuedate;
-    investments[guarrantor].grantees[grantee].amount = amt;
+  function getRepayValue(){
+
   }
 
-  function createBankAccount(uint coopid, address coopaddress, address user, string _date, uint _bal)
-  public {
-    /* require(!bankAccount[msg.sender], "Already have an account"); */
-    accounts[user].coopID = coopid;
-    accounts[user].coopAddress = coopaddress;
+  function repayLoan(){
+
   }
 
-  function credit(address user, string desc, string date, uint credited )
-  public {
-    accounts[user].txnCounter++;
-    uint txn = accounts[user].txnCounter;
-    accounts[user].transactions[txn].description = desc;
-    accounts[user].transactions[txn].date = date;
-    accounts[user].transactions[txn].balance += credited;
-  }
 
-  function debit(address user, string desc, string date, uint debited )
-  public {
-    accounts[user].txnCounter++;
-    uint txn = accounts[user].txnCounter;
-    accounts[user].transactions[txn].description = desc;
-    accounts[user].transactions[txn].date = date;
-    accounts[user].transactions[txn].balance += debited;
-  }
+>>>>>>> before discard
 }
