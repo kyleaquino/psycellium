@@ -36,6 +36,7 @@ def CreateCoop(request):
     if request.method == 'POST':
         form = CreateCoopForm(request.POST)
         if form.is_valid():
+            # coopdata = form.cleaned_data
             form.save()
             return redirect('/profile')
         else:
@@ -49,6 +50,7 @@ def JoinCoop(request):
     if request.method == 'POST':
         form = JoinCoopForm(request.POST,instance=user)
         if form.is_valid():
+            # coopdata = form.cleaned_data
             profile = form.save(commit=False)
             print(profile.user)
             profile.save()

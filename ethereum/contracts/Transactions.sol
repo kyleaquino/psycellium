@@ -42,7 +42,7 @@ contract Transactions{
   mapping(address => Bank) private accounts;
 
   function hasActiveLoan(address borrower)
-  public returns(bool)
+  public view returns (bool)
   {
     return loans[borrower].isActive;
   }
@@ -109,6 +109,6 @@ contract Transactions{
   }
 
   function getAllCoopLoans(){
-    
+
   }
 }
