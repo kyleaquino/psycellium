@@ -1,4 +1,5 @@
-contract Transactions{
+
+contract Transactions {
 
   enum State {APPROVED, PENDING, REJECTED}
 
@@ -42,17 +43,24 @@ contract Transactions{
   mapping(address => Bank) private accounts;
 
   function hasActiveLoan(address borrower)
-  public view returns (bool)
+  public view returns(bool)
   {
     return loans[borrower].isActive;
   }
 
-  function requestLoan(address borrower, uint coopid, uint amount, uint interest)
-  public {
-    loans[borrower] = Loan(coopid, State.PENDING, amount, 0, interest, '-', '-', true);
+  function getAmount(address borrower)
+  public view returns(uint)
+  {
+    return loans[borrower].amount;
   }
 
-  function repayLoan(address borrower, uint repay){
+  function requestLoan(address borrower, uint coopid, uint amount, uint interest)
+  public {
+    loans[borrower] = Loan(coopid, State.PENDING, amount, 0, interest, "-", "-", true);
+  }
+
+  function repayLoan(address borrower, uint repay)
+  public {
     loans[borrower].amount = loans[borrower].amount - repay;
   }
 
@@ -78,37 +86,41 @@ contract Transactions{
   }
 
   function grantInvestment(address guarrantor ,address grantee, string issuedate, uint amt)
-  public {
+  public view returns (uint){
     investments[guarrantor].grantees[grantee].issueDate = issuedate;
     investments[guarrantor].grantees[grantee].amount = amt;
+
+    return investments[guarrantor].grantees[grantee].amount;
   }
 
-  function createBankAccount(uint coopid, address coopaddress, address user, string _date, uint _bal)
-  public {
+  function createBankAccount(uint coopid, address coopaddress, address user)
+  public view returns (uint){
     /* require(!bankAccount[msg.sender], "Already have an account"); */
     accounts[user].coopID = coopid;
     accounts[user].coopAddress = coopaddress;
+
+    return accounts[user].coopID;
   }
 
   function credit(address user, string desc, string date, uint credited )
-  public {
+  public view returns (uint){
     accounts[user].txnCounter++;
     uint txn = accounts[user].txnCounter;
     accounts[user].transactions[txn].description = desc;
     accounts[user].transactions[txn].date = date;
     accounts[user].transactions[txn].balance += credited;
+
+    return accounts[user].transactions[txn].balance;
   }
 
   function debit(address user, string desc, string date, uint debited )
-  public {
+  public view returns (uint) {
     accounts[user].txnCounter++;
     uint txn = accounts[user].txnCounter;
     accounts[user].transactions[txn].description = desc;
     accounts[user].transactions[txn].date = date;
     accounts[user].transactions[txn].balance += debited;
-  }
 
-  function getAllCoopLoans(){
-
+    return accounts[user].transactions[txn].balance;
   }
 }
