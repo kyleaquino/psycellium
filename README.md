@@ -1,2 +1,2 @@
-# pravada
-A Web-based Publishing Platform
+# Psycellium
+A Decentralized Cooperatives Platform using Ethereum Network
