@@ -1,1 +1,1 @@
-web: gunicorn pravada.wsgi
+web: gunicorn psycellium.wsgi
