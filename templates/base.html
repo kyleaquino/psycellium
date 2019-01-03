@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Pravada">
+    <meta name="author" content="Kyle Aquino">
+    <link rel="icon" href="{% static 'img/logo/logo.png' %}" type="image/png">
+    <title>{% block title %}Pravada{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link type="text/css" rel="stylesheet" href="{% static 'vendor/bootstrap-vue/bootstrap.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'vendor/bootstrap-vue/bootstrap-vue.css' %}"/>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/all.css' %}" crossorigin="anonymous">
+
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    <!-- Custom CSS --> {% block customCSS %}{% endblock %}
+  </head>
+  <body>
+
+    {% block body%}{% endblock %}
+
+    <!-- Jquery -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Vue Plugins -->
+    <script src="{% static 'vendor/vue/vue.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-vue/polyfill.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-vue/bootstrap-vue.js' %}"></script>
+
+    <!-- Axios Plugin  -->
+    <script src="{% static 'vendor/axios/axios.js' %}"></script>
+
+    <!-- Custom JS -->  {% block customJS %}{% endblock %}
+  </body>
+</html>
