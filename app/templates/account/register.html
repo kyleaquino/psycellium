@@ -1,15 +1,40 @@
 {% extends "base/index.html" %}
 {% load static %}
 
-{% block title %} {% endblock %}
+{% block title %} Psycellium | Register {% endblock %}
 
 {% block customCSS %} {% endblock %}
 
 {% block body %}
-  <div id="(..)">
+  <div id="register">
+    <b-navbar variant="dark" type="dark">
+      <b-navbar-brand href="/">
+        <img src="{% static '/img/logo/logo-main.png'%}" class="d-inline-block align-top" height="30" width="30" alt="PSY">
+        Psycellium
+      </b-navbar-brand>
+      <b-navbar-nav right>
+        <b-nav-item href="/login/">Login</b-nav-item>
+      </b-navbar-nav>
+    </b-navbar>
+    <b-container class="mt-5">
+      <b-row class="justify-content-center">
+        <b-col cols="4">
+          <form class="form-signin">
+            <h2>Register</h2>
+            <b-form-input v-model="first_name" type="text" placeholder="First Name" required></b-form-input>
+            <b-form-input v-model="last_name" type="text" placeholder="Last Name" required></b-form-input>
+            <b-form-input v-model="email" type="text" placeholder="Email" required></b-form-input>
+            <b-form-input v-model="username" type="text" placeholder="Username" required></b-form-input>
+            <b-form-input v-model="password" type="password" placeholder="Password" required></b-form-input>
+            <b-form-input v-model="password1" type="password" placeholder="Confirm Password" required></b-form-input>
+            <b-button class="mt-2" variant="primary" block href=""> Register </b-button>
+          </form>
+        <b-col>
+      </b-row>
+    </b-container>
   </div>
 {% endblock %}
 
 {% block customJS %}
-  <script src="{% static 'vue/(..)/index.js' %}"></script>
+  <script src="{% static 'vue/account/register.js' %}"></script>
 {% endblock %}

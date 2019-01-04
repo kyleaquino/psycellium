@@ -4,7 +4,7 @@
 {% block title %} Psycellium | Homepage {% endblock %}
 
 {% block customCSS %}
-  <link rel="stylesheet" href="{% static 'css/agency.css' %}" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
 {% endblock %}
 
 {% block body %}
@@ -17,14 +17,13 @@
       </b-navbar-brand>
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-collapse is-nav id="nav_collapse">
-        <b-navbar-nav class="ml-auto">
-          <b-navbar-nav class="text-uppercase" right>
-            <b-nav-item href="#services">Services</b-nav-item>
-            <b-nav-item href="#about">About</b-nav-item>
-            <b-nav-item href="#team">Team</b-nav-item>
-            <b-nav-item href="#contact">Contact</b-nav-item>
-            <b-nav-item href="#login">Login</b-nav-item>
-          </b-navbar-nav>
+        <b-navbar-nav class="ml-auto text-uppercase" right>
+          <b-nav-item href="#services">Services</b-nav-item>
+          <b-nav-item href="#about">About</b-nav-item>
+          <b-nav-item href="#team">Team</b-nav-item>
+          <b-nav-item href="#contact">Contact</b-nav-item>
+          <b-nav-item href="#login">Login</b-nav-item>
+        </b-navbar-nav>
       </b-collapse>
     </b-navbar>
 
@@ -317,11 +316,11 @@
             <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
             <h3>Welcome</h3>
             <p>Join the journey for a more sustainable future for everyone</p>
-            <input type="submit" name="" value="Login"/><br/>
+            <b-button class="bg-light text-dark" href="/login/" value="Login"> Login</b-button>
           </b-col>
           <b-col md="9" class="register-right">
             <form action="index.html" method="post">
-              <b-row class="register-form">
+              <b-row class="register-form my-auto">
                 <b-col cols="6">
                   <b-form-group>
                      <b-form-input v-model="first_name" type="text" placeholder="First Name *" required></b-form-input>
@@ -332,21 +331,7 @@
                   <b-form-group>
                      <b-form-input v-model="email" type="text" placeholder="Your Email *" required></b-form-input>
                   </b-form-group>
-                  <b-form-group>
-                     <b-form-input v-model="phone" type="text" placeholder="Your Phone *" required></b-form-input>
-                  </b-form-group>
-                  <b-form-group>
-                    <div class="maxl">
-                        <label class="radio inline">
-                            <input type="radio" name="gender" value="male" checked>
-                            <span> Male </span>
-                        </label>
-                        <label class="radio inline">
-                            <input type="radio" name="gender" value="female">
-                            <span>Female </span>
-                        </label>
-                    </div>
-                  </b-form-group>
+                  
                 </b-col>
                 <b-col cols="6">
                   <b-form-group>
@@ -412,6 +397,5 @@
 {% endblock %}
 
 {% block customJS %}
-  <script src="{% static 'vue/homepage/index.js' %}"></script>
-  <script src="{% static 'js/agency.min.js' %}"></script>
+  <script src="{% static 'vue/homepage/homepage.js' %}"></script>
 {% endblock %}

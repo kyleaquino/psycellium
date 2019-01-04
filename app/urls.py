@@ -8,12 +8,12 @@ from . import views
 
 urlpatterns = [
     path('',views.index, name='index'),
-    path('home',views.home, name='index'),
-    path('login',views.login, name='login'),
-    path('register',views.register, name='register'),
-    path('logout',views.logout, name='logout'),
-    path('profile',views.profile, name='profile'),
-    path('createCoop',views.CreateCoop, name='createCoop'),
-    path('joincoop',views.JoinCoop, name='joincoop'),
-    path('quit',views.Quit, name='Quit'),
+    path('home/',views.home, name='index'),
+    path('login/',views.login, name='login'),
+    path('register/',views.register, name='register'),
+    path('logout/',views.logout, name='logout'),
+    path('profile/',views.profile, name='profile'),
+    path('createCoop/',views.CreateCoop, name='createCoop'),
+    path('joincoop/',views.JoinCoop, name='joincoop'),
+    path('quit/',views.Quit, name='Quit'),
 ]

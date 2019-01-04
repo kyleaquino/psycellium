@@ -68,48 +68,48 @@ def JoinCoop(request):
 
 
 def login(request):
-    form = LoginForm()
-    args = {'form' : form}
-    if request.method == "POST":
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                auth_login(request,user)
-                error= None
-                print('login')
-                return redirect('/home')
-        return render(request, 'login.html',args)
-    elif request.user.is_authenticated:
-        return redirect('home')
-    return render(request, 'login.html',args)
+    # form = LoginForm()
+    # args = {'form' : form}
+    # if request.method == "POST":
+    #     form = LoginForm(request.POST)
+    #     if form.is_valid():
+    #         username = form.cleaned_data['username']
+    #         password = form.cleaned_data['password']
+    #         user = authenticate(username=username, password=password)
+    #         if user is not None:
+    #             auth_login(request,user)
+    #             error= None
+    #             print('login')
+    #             return redirect('/home')
+    #     return render(request, 'login.html',args)
+    # elif request.user.is_authenticated:
+    #     return redirect('home')
+    return render(request, 'account/login.html')
 
 def register(request):
-    form = UserCreationForm()
-    profileform = ProfileForm()
-    args = {'form': form, 'profile' : profileform}
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        profileform = ProfileForm(request.POST)
-        if form.is_valid() and profileform.is_valid():
-            profile = profileform.save(commit=False)
-            parameters = {'id': '1111', 'address': 'This is the address'}
-            user = form.save()
-            profile.user = user
-            profile.save(parameters)
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            auth_login(request, user)
-            return redirect('/profile')
-        else:
-            print("errors : {}".format(profileform.errors.as_data()))
-            print("errors : {}".format(form.errors.as_data()))
-            form = UserCreationForm()
-            return render(request, 'register.html', args)
-    return render(request, 'register.html', args)
+    # form = UserCreationForm()
+    # profileform = ProfileForm()
+    # args = {'form': form, 'profile' : profileform}
+    # if request.method == 'POST':
+    #     form = UserCreationForm(request.POST)
+    #     profileform = ProfileForm(request.POST)
+    #     if form.is_valid() and profileform.is_valid():
+    #         profile = profileform.save(commit=False)
+    #         parameters = {'id': '1111', 'address': 'This is the address'}
+    #         user = form.save()
+    #         profile.user = user
+    #         profile.save(parameters)
+    #         username = form.cleaned_data.get('username')
+    #         raw_password = form.cleaned_data.get('password1')
+    #         user = authenticate(username=username, password=raw_password)
+    #         auth_login(request, user)
+    #         return redirect('/profile')
+    #     else:
+    #         print("errors : {}".format(profileform.errors.as_data()))
+    #         print("errors : {}".format(form.errors.as_data()))
+    #         form = UserCreationForm()
+    #         return render(request, 'register.html', args)
+    return render(request, 'account/register.html')
 
 def Quit(request):
     Profile.objects.filter(user=request.user).update(coop=None)
