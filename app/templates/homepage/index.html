@@ -268,47 +268,104 @@
 
     <!-- Contact -->
     <section id="contact">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
+      <b-container>
+        <b-row>
+          <b-col lg="12" class="text-center">
             <h2 class="section-heading text-uppercase">Contact Us</h2>
             <h3 class="section-subheading text-muted">Contact Psycellium directly</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <form id="contactForm" name="sentMessage" novalidate="novalidate">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <input class="form-control" id="name" type="text" placeholder="Your Name *" required="required" data-validation-required-message="Please enter your name.">
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col lg="12">
+            <b-form id="contactForm">
+              <b-row>
+                <b-col md="6">
+                  <b-form-group>
+                    <b-form-input id="name" v-model="name" type="text" placeholder="Enter your Name:" required></b-form-input>
                     <p class="help-block text-danger"></p>
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control" id="email" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">
+                  </b-form-group>
+                  <b-form-group>
+                    <b-form-input id="email" v-model="email" type="text" placeholder="Enter your Email:" required></b-form-input>
                     <p class="help-block text-danger"></p>
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">
+                  </b-form-group>
+                  <b-form-group>
+                    <b-form-input id="phone" v-model="phone" type="text" placeholder="Enter your Mobile Number:" required></b-form-input>
                     <p class="help-block text-danger"></p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <textarea class="form-control" id="message" placeholder="Your Message *" required="required" data-validation-required-message="Please enter a message."></textarea>
+                  </b-form-group>
+                </b-col>
+                <b-col md="6">
+                  <b-form-group>
+                    <b-form-textarea id="message" v-model="message" type="text" placeholder="Your Message:" required></b-form-textarea>
                     <p class="help-block text-danger"></p>
-                  </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="col-lg-12 text-center">
+                  </b-form-group>
+                </b-col>
+                <b-col lg="12" class="text-center">
                   <div id="success"></div>
-                  <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
-                </div>
-              </div>
+                  <b-button id="sendMessageButton" class="text-uppercase" variant="primary" size="lg" type="submit" href=""> Send Message </b-button>
+                </b-col>
+              </b-row>
+            </b-form>
+          </b-col>
+        </b-row>
+      </b-container>
+    </section>
+
+    <section id="login">
+      <b-container class="register">
+        <b-row>
+          <b-col md="3" class="register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+            <h3>Welcome</h3>
+            <p>Join the journey for a more sustainable future for everyone</p>
+            <input type="submit" name="" value="Login"/><br/>
+          </b-col>
+          <b-col md="9" class="register-right">
+            <form action="index.html" method="post">
+              <b-row class="register-form">
+                <b-col cols="6">
+                  <b-form-group>
+                     <b-form-input v-model="first_name" type="text" placeholder="First Name *" required></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                     <b-form-input v-model="last_name" type="text" placeholder="Last Name *" required></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                     <b-form-input v-model="email" type="text" placeholder="Your Email *" required></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                     <b-form-input v-model="phone" type="text" placeholder="Your Phone *" required></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                    <div class="maxl">
+                        <label class="radio inline">
+                            <input type="radio" name="gender" value="male" checked>
+                            <span> Male </span>
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="gender" value="female">
+                            <span>Female </span>
+                        </label>
+                    </div>
+                  </b-form-group>
+                </b-col>
+                <b-col cols="6">
+                  <b-form-group>
+                     <b-form-input v-model="username" type="text" placeholder="Your Username *" required></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                     <b-form-input v-model="password" type="text" placeholder="Password *" required></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                     <b-form-input v-model="password1" type="text" placeholder="Confirm Password *" required></b-form-input>
+                  </b-form-group>
+
+                  <b-button block variant="primary" href="">Register</b-button>
+                </b-col>
+              </b-row>
             </form>
-          </div>
-        </div>
-      </div>
+          </b-col>
+        <b-row>
+      </b-container>
     </section>
 
     <!-- Footer -->
