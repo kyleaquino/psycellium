@@ -17,11 +17,11 @@ def index(request):
 
 def home(request):
     # Coop = Cooperative.objects.all()
-    profile = Profile.objects.all()
-    args = {'profile' : profile}
-    if request.user.is_authenticated:
-        return redirect('/profile')
-    return render(request, 'index.html', args)
+    # profile = Profile.objects.all()
+    # args = {'profile' : profile}
+    # if request.user.is_authenticated:
+    #     return redirect('/profile')
+    return render(request, 'account/index.html')
 
 def logout(request):
     if not request.user.is_authenticated:

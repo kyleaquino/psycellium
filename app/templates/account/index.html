@@ -1,15 +1,24 @@
 {% extends "base/index.html" %}
 {% load static %}
 
-{% block title %} {% endblock %}
+{% block title %} Primary | Homepage {% endblock %}
 
-{% block customCSS %} {% endblock %}
+{% block customCSS %}
+<link href="{% static 'vendor/sb-admin/css/sb-admin-2.css' %}" rel="stylesheet">
+<link href="{% static 'vendor/metisMenu/metisMenu.min.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
-  <div id="(..)">
+  <div id="account">
+    {% include 'account/pages/base/navbar.html'%}
+    {% include 'account/pages/base/sidebar.html'%}
+    {% include 'account/pages/base/footer.html'%}
+
   </div>
 {% endblock %}
 
 {% block customJS %}
-  <script src="{% static 'vue/(..)/index.js' %}"></script>
+  <script src="{% static 'vue/account/index.js' %}"></script>
+  <script src="{% static 'vendor/sb-admin/js/sb-admin-2.js' %}"></script>
+  <script src="{% static 'vendor/metisMenu/metisMenu.min.js' %}"></script>
 {% endblock %}

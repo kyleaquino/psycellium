@@ -1,0 +1,44 @@
+{% load static %}
+
+<!-- Login Section -->
+<section id="login">
+  <b-container class="register">
+    <b-row>
+      <b-col md="3" class="register-left">
+        <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+        <h3>Welcome</h3>
+        <p>Join the journey for a more sustainable future for everyone</p>
+        <b-button class="bg-light text-dark mb-5" href="/login/" value="Login"> Login</b-button>
+      </b-col>
+      <b-col md="9" class="register-right">
+        <form action="index.html" method="post">
+          <b-row class="register-form my-auto">
+            <b-col lg="6" md="12">
+              <b-form-group>
+                 <b-form-input v-model="first_name" type="text" placeholder="First Name *" required></b-form-input>
+              </b-form-group>
+              <b-form-group>
+                 <b-form-input v-model="last_name" type="text" placeholder="Last Name *" required></b-form-input>
+              </b-form-group>
+              <b-form-group>
+                 <b-form-input v-model="email" type="text" placeholder="Your Email *" required></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col lg="6" md="12">
+              <b-form-group>
+                 <b-form-input v-model="username" type="text" placeholder="Your Username *" required></b-form-input>
+              </b-form-group>
+              <b-form-group>
+                 <b-form-input v-model="password" type="text" placeholder="Password *" required></b-form-input>
+              </b-form-group>
+              <b-form-group>
+                 <b-form-input v-model="password1" type="text" placeholder="Confirm Password *" required></b-form-input>
+              </b-form-group>
+              <b-button block variant="primary" href="">Register</b-button>
+            </b-col>
+          </b-row>
+        </form>
+      </b-col>
+    <b-row>
+  </b-container>
+</section>

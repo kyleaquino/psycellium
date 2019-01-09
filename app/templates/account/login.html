@@ -20,11 +20,12 @@
     <b-container class="mt-5">
       <b-row class="justify-content-center">
         <b-col cols="4">
-          <form class="form-signin">
+          <form class="form-signin" action="/login/" method="post">
+            {% csrf_token %}
             <h2>Login</h2>
-            <b-form-input v-model="Username" type="text" placeholder="Username" required></b-form-input>
-            <b-form-input v-model="Password" type="password" placeholder="Password" required></b-form-input>
-            <b-button class="mt-2" variant="primary" block href=""> Login </b-button>
+            <b-form-input class="mb-1" v-model="Username" type="text" placeholder="Username" required></b-form-input>
+            <b-form-input class="mb-1" v-model="Password" type="password" placeholder="Password" required></b-form-input>
+            <b-button class="mt-2" variant="primary" type="submit" value="submit" block> Login </b-button>
           </form>
         <b-col>
       </b-row>

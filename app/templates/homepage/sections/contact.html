@@ -1,0 +1,45 @@
+{% load static %}
+
+<!-- Contact -->
+<section id="contact">
+  <b-container>
+    <b-row>
+      <b-col lg="12" class="text-center">
+        <h2 class="section-heading text-uppercase">Contact Us</h2>
+        <h3 class="section-subheading text-muted">Contact Psycellium directly</h3>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col lg="12">
+        <b-form id="contactForm">
+          <b-row>
+            <b-col md="6">
+              <b-form-group>
+                <b-form-input id="name" v-model="name" type="text" placeholder="Enter your Name:" required></b-form-input>
+                <p class="help-block text-danger"></p>
+              </b-form-group>
+              <b-form-group>
+                <b-form-input id="email" v-model="email" type="text" placeholder="Enter your Email:" required></b-form-input>
+                <p class="help-block text-danger"></p>
+              </b-form-group>
+              <b-form-group>
+                <b-form-input id="phone" v-model="phone" type="text" placeholder="Enter your Mobile Number:" required></b-form-input>
+                <p class="help-block text-danger"></p>
+              </b-form-group>
+            </b-col>
+            <b-col md="6">
+              <b-form-group>
+                <b-form-textarea id="message" v-model="message" type="text" placeholder="Your Message:" required></b-form-textarea>
+                <p class="help-block text-danger"></p>
+              </b-form-group>
+            </b-col>
+            <b-col lg="12" class="text-center">
+              <div id="success"></div>
+              <b-button id="sendMessageButton" class="text-uppercase" variant="primary" size="lg" type="submit" href=""> Send Message </b-button>
+            </b-col>
+          </b-row>
+        </b-form>
+      </b-col>
+    </b-row>
+  </b-container>
+</section>
