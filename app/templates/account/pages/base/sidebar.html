@@ -1,77 +1,20 @@
-<b-container fluid>
-  <b-row>
-    <b-col cols="2">
-      <b-nav vertical class="ml-auto">
-        <b-nav-item active>
-          <i class="fas fa-tachometer-alt"></i> Dashboard
-        </b-nav-item>
-        <b-nav-item>
-          <i class="fas fa-handshake"></i> Cooperatives
-        </b-nav-item>
-        <b-nav-item>
-          <i class="fas fa-wallet"></i> Wallet
-        </b-nav-item>
-        <b-nav-item>
-          <i class="fas fa-cogs"></i> Settings
-        </b-nav-item>
-        <b-nav-item>
-          <i class="fas fa-question-circle"></i>FAQ
-        </b-nav-item>
-      </b-nav>
-    </b-col>
-    <b-col cols="10">
-      <b-row>
-        <h1 class="text-secondary">Dashboard</h1>
-      </b-row>
-      <b-row>
-        <b-col cols="5">
-          <b-card title="Wallet Transactions"
-              img-src="https://picsum.photos/600/300/?image=25"
-              img-alt="Image"
-              img-top
-              tag="article"
-              class="mb-2">
-            <p class="card-text">
-              Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <b-button href="#" variant="primary">Go somewhere</b-button>
-          </b-card>
-          <b-card title="Activity Log"
-              img-src="https://picsum.photos/600/300/?image=25"
-              img-alt="Image"
-              img-top
-              tag="article"
-              class="mb-2">
-            <p class="card-text">
-              Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <b-button href="#" variant="primary">Go somewhere</b-button>
-          </b-card>
-        </b-col>
-        <b-col cols="6">
-          <b-card title="Coin Chart"
-              img-src="https://picsum.photos/600/300/?image=25"
-              img-alt="Image"
-              img-top
-              tag="article"
-              class="mb-2">
-            <p class="card-text">
-              Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <b-button href="#" variant="primary">Go somewhere</b-button>
-          </b-card>
-          <b-card title="Quick Actions"
-            sub-title="Card subtitle">
-              <p class="card-text">
-                  Some quick example text to build on the <em>card title</em> and make up the bulk of the card's content.
-              </p>
-              <a href="#"
-                 class="card-link">Card link</a>
-              <b-link href="#"
-                      class="card-link">Another link</b-link>
-          </b-card>
-        </b-col>
-      </b-row>
-    </b-col>
-  </b-row>
-</b-container>
+<b-nav vertical class="ml-auto mt-2">
+  <b-nav-item href="/home/">
+    <i class="fas fa-tachometer-alt"></i> Dashboard
+  </b-nav-item>
+  <b-nav-item href="/wallet/">
+    <i class="fas fa-wallet"></i> My Wallet
+  </b-nav-item>
+  <b-nav-item href="/cooperatives/">
+    <i class="fas fa-handshake"></i> Cooperatives
+  </b-nav-item>
+  <b-nav-item href="/exchange/">
+    <i class="fas fa-exchange-alt"></i> Exchange
+  </b-nav-item>
+  <b-nav-item href="/settings/">
+    <i class="fas fa-cogs"></i> Settings
+  </b-nav-item>
+  <b-nav-item href="/faq/">
+    <i class="fas fa-question-circle"></i>FAQ
+  </b-nav-item>
+</b-nav>

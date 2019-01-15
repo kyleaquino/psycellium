@@ -23,50 +23,6 @@ def home(request):
     #     return redirect('/profile')
     return render(request, 'account/index.html')
 
-def logout(request):
-    if not request.user.is_authenticated:
-        return index(request)
-    auth_logout(request)
-    return redirect('/home')
-
-def profile(request):
-    info = Profile.objects.get(user=request.user)
-    members = Profile.objects.filter(coop=info.coop)
-    print(members)
-    args = {'user' : request.user, 'info' : info, 'members' : members}
-    return render(request, 'profile.html', args)
-
-def CreateCoop(request):
-    form = CreateCoopForm()
-    default = {'id' : '0000', 'address' : 'Address to'}
-    if request.method == 'POST':
-        form = CreateCoopForm(request.POST)
-        if form.is_valid():
-          instance = form.save(commit=False)
-          instance.save(parameters = default)
-          return redirect('/profile')
-        else:
-            form = CreateCoopForm()
-    args = {'form' : form}
-    return render(request, 'createcoop.html', args)
-
-def JoinCoop(request):
-    user = get_object_or_404(Profile,user=request.user)
-    form = JoinCoopForm(instance=user)
-    if request.method == 'POST':
-        form = JoinCoopForm(request.POST,instance=user)
-        if form.is_valid():
-            # coopdata = form.cleaned_data
-            profile = form.save(commit=False)
-            print(profile.user)
-            profile.save()
-            return redirect('/profile')
-        else:
-            form = JoinCoopForm()
-    args = {'form' : form}
-    return render(request, 'joincoop.html', args)
-
-
 def login(request):
     # form = LoginForm()
     # args = {'form' : form}
@@ -110,6 +66,64 @@ def register(request):
     #         form = UserCreationForm()
     #         return render(request, 'register.html', args)
     return render(request, 'account/register.html')
+
+def wallet(request):
+    return render(request, 'account/pages/wallet/index.html')
+
+def cooperative(request):
+    return render(request, 'cooperative/index.html')
+
+def exchange(request):
+    return render(request, 'exchange/index.html')
+
+def settings(request):
+    return render(request, 'account/pages/settings/index.html')
+
+def faq(request):
+    return render(request, 'account/pages/faq/index.html')
+
+def logout(request):
+    if not request.user.is_authenticated:
+        return index(request)
+    auth_logout(request)
+    return redirect('/')
+
+def profile(request):
+    info = Profile.objects.get(user=request.user)
+    members = Profile.objects.filter(coop=info.coop)
+    print(members)
+    args = {'user' : request.user, 'info' : info, 'members' : members}
+    return render(request, 'profile.html', args)
+
+def CreateCoop(request):
+    form = CreateCoopForm()
+    default = {'id' : '0000', 'address' : 'Address to'}
+    if request.method == 'POST':
+        form = CreateCoopForm(request.POST)
+        if form.is_valid():
+          instance = form.save(commit=False)
+          instance.save(parameters = default)
+          return redirect('/profile')
+        else:
+            form = CreateCoopForm()
+    args = {'form' : form}
+    return render(request, 'createcoop.html', args)
+
+def JoinCoop(request):
+    user = get_object_or_404(Profile,user=request.user)
+    form = JoinCoopForm(instance=user)
+    if request.method == 'POST':
+        form = JoinCoopForm(request.POST,instance=user)
+        if form.is_valid():
+            # coopdata = form.cleaned_data
+            profile = form.save(commit=False)
+            print(profile.user)
+            profile.save()
+            return redirect('/profile')
+        else:
+            form = JoinCoopForm()
+    args = {'form' : form}
+    return render(request, 'joincoop.html', args)
 
 def Quit(request):
     Profile.objects.filter(user=request.user).update(coop=None)

@@ -6,7 +6,7 @@ contract_name = ':Psycellium'
 
 def setMember(members,coopid):
     w3 = web3.init()
-    w3.eth.defaultAccount = w3.eth.accounts[0]
+    w3.eth.defaultAccount = w3.eth.accounts[0] #CreateAccount, AddAccount Ropsten
     interface = web3.compile(ETH_DIR,contract_file,contract_name)
     contract = web3.contract(w3, interface['abi'], interface['bin'])
     tx_hash, tx_receipt = web3.tx_generate(contract, w3)

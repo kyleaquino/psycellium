@@ -7,13 +7,15 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    path('',views.index, name='index'),
-    path('home/',views.home, name='index'),
-    path('login/',views.login, name='login'),
-    path('register/',views.register, name='register'),
-    path('logout/',views.logout, name='logout'),
-    path('profile/',views.profile, name='profile'),
-    path('createCoop/',views.CreateCoop, name='createCoop'),
-    path('joincoop/',views.JoinCoop, name='joincoop'),
-    path('quit/',views.Quit, name='Quit'),
+    path('',views.index),
+    path('home/',views.home),
+    path('login/',views.login),
+    path('register/',views.register),
+    path('profile/',views.profile),
+    path('wallet/',views.wallet),
+    path('cooperatives/',views.cooperative),
+    path('exchange/',views.exchange),
+    path('settings/',views.settings),
+    path('faq/',views.faq),
+    path('logout/',views.logout),
 ]
