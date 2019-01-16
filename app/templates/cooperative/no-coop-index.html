@@ -1,7 +1,7 @@
 {% extends "base/index.html" %}
 {% load static %}
 
-{% block title %} Primary | Wallet {% endblock %}
+{% block title %} Primary | Cooperatives {% endblock %}
 
 {% block customCSS %}
 <link href="{% static 'vendor/sb-admin/css/sb-admin-2.css' %}" rel="stylesheet">
@@ -16,23 +16,8 @@
           {% include 'account/pages/base/sidebar.html'%}
         </b-col>
         <b-col cols="10">
-          <b-row class="mt-3">
-            {% include 'account/components/jumbotron/wallet-header.html' %}
-          </b-row>
-          <b-row>
-            <b-container class="mb-3">
-              <b-tabs>
-                <b-tab title="All" active>
-                  {% include 'account/components/accordion/all-transactions.html' %}
-                </b-tab>
-                <b-tab title="Sent" >
-                  {% include 'account/components/accordion/sent-transactions.html' %}
-                </b-tab>
-                <b-tab title="Recieved" >
-                  {% include 'account/components/accordion/recieved-transactions.html' %}
-                </b-tab>
-              </b-tabs>
-            </b-container>
+          <b-row class="mt-5">
+
           </b-row>
         </b-col>
       </b-row>

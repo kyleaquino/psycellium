@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'transaction',
     'cooperative',
+    'demo',
     'user',
     'app'
 ]
@@ -59,6 +60,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [ os.path.join(BASE_DIR, 'templates'),
                   os.path.join(BASE_DIR, 'app/templates'),
+                  os.path.join(BASE_DIR, 'demo/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
