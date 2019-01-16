@@ -1,76 +1,259 @@
 pragma solidity ^0.4.24;
 
 contract Psycellium{
-  enum roles { Member, Staff, Director, President, Manager, Secretary, Auditor, Treasurer }
+  event MemberRegistered(address indexed account);
+  event MemberRemoval(address indexed account);
+  event DirectorRegistered(address indexed account);
+  event DirectorRemoval(address indexed account);
+  event Confirmation(address indexed sender, uint indexed transactionId);
+  event Revocation(address indexed sender, uint indexed transactionId);
+  event Submission(uint indexed transactionId);
+  event Execution(uint indexed transactionId);
+  event ExecutionFailure(uint indexed transactionId);
+  event Deposit(address indexed sender, uint amount);
+  event RequirementChange(uint required);
 
-  uint private coopID;
-  uint private landID;
-  uint private bankID;
+  mapping (uint => Transaction) public transactions;
+  mapping (uint => mapping (address => bool)) public confirmations;
+  mapping (address => bool) public isDirector;
 
-  struct Cooperative{
-    string coopAddress;
-    address[] director;
-    string coopName;
-    string coopDescription;
-    string issuedDate;
-    bool isExisting;
-    // Capital
-  }
+  address[] public directors;
+  address[] public members;
+  uint public required;
+  uint public transactionCount;
+  string public coopName;
+  string public coopDescription;
+  uint256 public defaultJoinFee = 200000000000000000; // 25 USD
 
-  struct Member{
-    string name;
-    bool isActive;
-    roles role;
-  }
-
-  mapping (address => Member) private members; // Get all members | Key: Address | Value: Member Struct [name, isActive, role]
-  mapping (uint => Cooperative) private coops; // Get all Coops | Key: Uint | Value: Cooperative Struct []
-
-  mapping (uint => address[]) private coop_members; // Key: CoopID | Value: MemberAddresses
-  mapping (address => uint) private member_coop;    // Key: MemberAddress | Value: CoopID
-
-  function setMemberName(string name) // Set Name, Make issued date 'NA', true
-  public {
-    members[msg.sender] = Member(name, true, roles.Member);
-  }
-
-  function setMember(address[] _members, uint _coopid)
-  public {
-    coop_members[_coopid] = _members;
-  }
-
-  function createCoop(string coopaddress, address[] director ,string coopname, string coopdesc, string issueddate)
-  public {
-    coopID++;
-    uint id = coopID;
-    coops[id] = Cooperative(coopaddress, director, coopname, coopdesc, issueddate, true);
-  }
-
-  function setBoardOfDirectors(address[] directors, uint coopid )
-  public {
-    coops[coopid].director = directors;
-  }
-
-  function getCoopAddress(uint coopid)
-  public view returns (string){
-    return coops[coopid].coopAddress;
-  }
-
-  function getMembers(uint coopid)
-  public view returns(address[]){ // TODO Require Function
-    return coop_members[coopid];
-  }
-
-  function isCoopMember(address userid)
-  public view returns(bool){
-    if(member_coop[userid] == 0){
-      return false;
+  struct Transaction {
+        address destination;
+        uint value;
+        bytes data;
+        bool executed;
     }
-    return true;
+
+  modifier onlyWallet() {
+    if (msg.sender != address(this))
+        throw;
+    _;
   }
 
-  function getBoardOfDirectors(uint coopid)
-  public view returns (address[]){
-    return coops[coopid].director;
+  modifier directorDoesNotExist(address director) {
+    if (isDirector[director])
+      throw;
+    _;
   }
+
+  modifier directorExists(address director) {
+    if (!isDirector[director])
+      throw;
+    _;
+  }
+
+  modifier transactionExists(uint transactionId) {
+    if (transactions[transactionId].destination == 0)
+      throw;
+    _;
+  }
+
+  modifier confirmed(uint transactionId, address director) {
+    if (!confirmations[transactionId][director])
+      throw;
+    _;
+  }
+
+  modifier notConfirmed(uint transactionId, address owner) {
+    if (confirmations[transactionId][owner])
+      throw;
+    _;
+  }
+
+  modifier notExecuted(uint transactionId) {
+    if (transactions[transactionId].executed)
+      throw;
+    _;
+  }
+
+  modifier notNull(address _address) {
+    if (_address == 0)
+      throw;
+    _;
+  }
+
+  constructor(bytes32 _coopname, bytes32 _coopdesc, uint _required)
+    public
+  {
+    coopName = _coopname;
+    description = _coopdesc;
+    directors.push(msg.sender);
+    isDirector[msg.sender] = true;
+    DirectorRegistered(msg.sender)
+  }
+
+  function submitTransaction(address destination, uint value, bytes data)
+    public
+    returns (uint transactionId)
+   {
+     transactionId = addTransaction(destination, value, data);
+     confirmTransaction(transactionId);
+   }
+
+  function confirmTransaction(uint transactionId)
+    public
+    directorExists(msg.sender)
+    transactionExists(transactionId)
+    notConfirmed(transactionId, msg.sender)
+  {
+    confirmations[transactionId][msg.sender] = true;
+    Confirmation(msg.sender, transactionId);
+    executeTransaction(transactionId);
+  }
+
+  function revokeConfirmation(uint transactionId)
+    public
+    ownerExists(msg.sender)
+    confirmed(transactionId, msg.sender)
+    notExecuted(transactionId)
+  {
+    confirmations[transactionId][msg.sender] = false;
+    Revocation(msg.sender, transactionId);
+  }
+
+  function executeTransaction(uint transactionId)
+    public
+    notExecuted(transactionId)
+  {
+    if (isConfirmed(transactionId)) {
+      Transaction tx = transactions[transactionId];
+      tx.executed = true;
+      if (tx.destination.call.value(tx.value)(tx.data))
+        Execution(transactionId);
+      else {
+        ExecutionFailure(transactionId);
+        tx.executed = false;
+      }
+    }
+  }
+
+  function isConfirmed(uint transactionId)
+    public
+    constant
+    returns (bool)
+  {
+    uint count = 0;
+    for (uint i=0; i<owners.length; i++) {
+      if (confirmations[transactionId][owners[i]])
+        count += 1;
+      if (count == required)
+        return true;
+    }
+  }
+
+  function addTransaction(address destination, uint value, bytes data)
+    internal
+    notNull(destination)
+    returns (uint transactionId)
+  {
+    transactionId = transactionCount;
+    transactions[transactionId] = Transaction({
+      destination: destination,
+      value: value,
+      data: data,
+      executed: false
+    });
+    transactionCount += 1;
+    Submission(transactionId);
+  }
+
+  function getConfirmationCount(uint transactionId)
+    public
+    constant
+    returns (uint count)
+  {
+    for (uint i=0; i<owners.length; i++)
+      if (confirmations[transactionId][owners[i]])
+        count += 1;
+  }
+
+  function getTransactionCount(bool pending, bool executed)
+    public
+    constant
+    returns (uint count)
+  {
+    for (uint i=0; i<transactionCount; i++)
+      if (   pending && !transactions[i].executed
+          || executed && transactions[i].executed)
+          count += 1;
+  }
+
+  function getDirectors()
+    public
+    constant
+    returns (address[])
+  {
+    return directors;
+  }
+
+  function getConfirmations(uint transactionId)
+    public
+    constant
+    returns (address[] _confirmations)
+  {
+    address[] memory confirmationsTemp = new address[](owners.length);
+    uint count = 0;
+    uint i;
+    for (i=0; i<owners.length; i++)
+      if (confirmations[transactionId][owners[i]]) {
+          confirmationsTemp[count] = owners[i];
+          count += 1;
+      }
+      _confirmations = new address[](count);
+      for (i=0; i<count; i++)
+        _confirmations[i] = confirmationsTemp[i];
+  }
+
+  function getTransactionIds(uint from, uint to, bool pending, bool executed)
+    public
+    constant
+    returns (uint[] _transactionIds)
+  {
+    uint[] memory transactionIdsTemp = new uint[](transactionCount);
+    uint count = 0;
+    uint i;
+    for (i=0; i<transactionCount; i++)
+        if (   pending && !transactions[i].executed
+            || executed && transactions[i].executed)
+        {
+          transactionIdsTemp[count] = i;
+          count += 1;
+        }
+        _transactionIds = new uint[](to - from);
+        for (i=from; i<to; i++)
+            _transactionIds[i - from] = transactionIdsTemp[i];
+  }
+
+  function join() payable public {
+    require(msg.value == defaultJoinFee);
+    members.push(msg.sender)
+    MemberRegistered(msg.sender)
+  }
+
+  function setDirector(address account) public{
+    directors.push(account)
+    DirectorRegistered(msg.sender)
+  }
+
+  function deposit(uint256 amount) payable public {
+    require(msg.value == amount);
+    Deposit(address indexed sender, uint amount);
+  }
+
+  function withdraw(uint256 amount) public {
+    msg.sender.transfer(amount);
+  }
+
+  function getCoopBalance() public view returns (uint256) {
+    return address(this).balance;
+  }
+
 }
