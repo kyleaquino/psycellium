@@ -16,6 +16,8 @@ contract Psycellium{
   mapping (uint => Transaction) public transactions;
   mapping (uint => mapping (address => bool)) public confirmations;
   mapping (address => bool) public isDirector;
+  mapping (address => bool) public isMember;
+  mapping (address => uint) public balance;
 
   address[] public directors;
   address[] public members;
@@ -26,11 +28,11 @@ contract Psycellium{
   uint256 public defaultJoinFee = 200000000000000000; // 25 USD
 
   struct Transaction {
-        address destination;
-        uint value;
-        bytes data;
-        bool executed;
-    }
+    address destination;
+    uint value;
+    bytes data;
+    bool executed;
+  }
 
   modifier onlyWallet() {
     if (msg.sender != address(this))
@@ -38,14 +40,14 @@ contract Psycellium{
     _;
   }
 
-  modifier directorDoesNotExist(address director) {
-    if (isDirector[director])
+  modifier directorExists(address director) {
+    if (!isDirector[director])
       throw;
     _;
   }
 
-  modifier directorExists(address director) {
-    if (!isDirector[director])
+  modifier memberExists(address member) {
+    if (!isMember[member])
       throw;
     _;
   }
@@ -62,8 +64,8 @@ contract Psycellium{
     _;
   }
 
-  modifier notConfirmed(uint transactionId, address owner) {
-    if (confirmations[transactionId][owner])
+  modifier notConfirmed(uint transactionId, address director) {
+    if (confirmations[transactionId][director])
       throw;
     _;
   }
@@ -111,7 +113,7 @@ contract Psycellium{
 
   function revokeConfirmation(uint transactionId)
     public
-    ownerExists(msg.sender)
+    directorExists(msg.sender)
     confirmed(transactionId, msg.sender)
     notExecuted(transactionId)
   {
@@ -141,8 +143,8 @@ contract Psycellium{
     returns (bool)
   {
     uint count = 0;
-    for (uint i=0; i<owners.length; i++) {
-      if (confirmations[transactionId][owners[i]])
+    for (uint i=0; i<directors.length; i++) {
+      if (confirmations[transactionId][directors[i]])
         count += 1;
       if (count == required)
         return true;
@@ -165,13 +167,42 @@ contract Psycellium{
     Submission(transactionId);
   }
 
+  function setDirector(address account) public{
+    directors.push(account)
+    isDirector[msg.sender] = true;
+    DirectorRegistered(msg.sender)
+  }
+
+  function join() payable public {
+    require(msg.value == defaultJoinFee);
+    members.push(msg.sender)
+    isMember[msg.sender] = true;
+    MemberRegistered(msg.sender)
+  }
+
+  function deposit(uint256 amount) payable
+    public
+    memberExists(msg.sender)
+  {
+    require(msg.value == amount);
+    Deposit(address indexed sender, uint amount);
+  }
+
+  function withdraw(uint256 amount) public {
+    msg.sender.transfer(amount);
+  }
+
+  function getCoopBalance() public view returns (uint256) {
+    return address(this).balance;
+  }
+
   function getConfirmationCount(uint transactionId)
     public
     constant
     returns (uint count)
   {
-    for (uint i=0; i<owners.length; i++)
-      if (confirmations[transactionId][owners[i]])
+    for (uint i=0; i<directors.length; i++)
+      if (confirmations[transactionId][directors[i]])
         count += 1;
   }
 
@@ -199,12 +230,12 @@ contract Psycellium{
     constant
     returns (address[] _confirmations)
   {
-    address[] memory confirmationsTemp = new address[](owners.length);
+    address[] memory confirmationsTemp = new address[](directors.length);
     uint count = 0;
     uint i;
-    for (i=0; i<owners.length; i++)
-      if (confirmations[transactionId][owners[i]]) {
-          confirmationsTemp[count] = owners[i];
+    for (i=0; i<directors.length; i++)
+      if (confirmations[transactionId][directors[i]]) {
+          confirmationsTemp[count] = directors[i];
           count += 1;
       }
       _confirmations = new address[](count);
@@ -231,29 +262,4 @@ contract Psycellium{
         for (i=from; i<to; i++)
             _transactionIds[i - from] = transactionIdsTemp[i];
   }
-
-  function join() payable public {
-    require(msg.value == defaultJoinFee);
-    members.push(msg.sender)
-    MemberRegistered(msg.sender)
-  }
-
-  function setDirector(address account) public{
-    directors.push(account)
-    DirectorRegistered(msg.sender)
-  }
-
-  function deposit(uint256 amount) payable public {
-    require(msg.value == amount);
-    Deposit(address indexed sender, uint amount);
-  }
-
-  function withdraw(uint256 amount) public {
-    msg.sender.transfer(amount);
-  }
-
-  function getCoopBalance() public view returns (uint256) {
-    return address(this).balance;
-  }
-
 }
