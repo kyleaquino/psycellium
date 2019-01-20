@@ -16,19 +16,19 @@ contract Cooperatives {
   event RequirementChange(uint required);
 
   /* PUBLIC DATA */
-  string public name;
-  string public description;
-  address[] public members;
-  address[] public directors;
-  uint public transactionCount;
-  uint public required;
-  uint256 public defaultJoinFee = 200000000000000000; // 25 USD
+  string private name;
+  string private description;
+  address[] private members;
+  address[] private directors;
+  uint private transactionCount;
+  uint private required;
+  uint256 private defaultJoinFee = 200000000000000000; // 25 USD
 
-  mapping (uint => Transaction) public transactions;
-  mapping (uint => mapping (address => bool)) public confirmations;
-  mapping (address => bool) public isDirector;
-  mapping (address => bool) public isMember;
-  mapping (address => uint) public balance;
+  mapping (uint => Transaction) private transactions;
+  mapping (uint => mapping (address => bool)) private confirmations;
+  mapping (address => bool) private isDirector;
+  mapping (address => bool) private isMember;
+  mapping (address => uint) private balance;
 
   struct Transaction {
     address destination;
@@ -64,10 +64,14 @@ contract Cooperatives {
     emit Submission(transactionId);
   }
 
-  function joinCoop() payable public {
+  function () payable public{
+  }
+
+  function joinCoop(uint amount) payable public {
     require(
       !isMember[msg.sender] &&
-      msg.value == defaultJoinFee
+      msg.value == amount &&
+      msg.value >= defaultJoinFee
     );
     members.push(msg.sender);
     isMember[msg.sender] = true;
@@ -90,38 +94,23 @@ contract Cooperatives {
       isMember[msg.sender]
     );
     balance[msg.sender] += amount;
-    balance[address(this)] += amount;
     emit Deposit(msg.sender, amount);
   }
 
   function withdraw(uint amount) public {
     require(
       isMember[msg.sender] &&
-      balance[address(this)] >= amount &&
       balance[msg.sender]>=amount
     );
     msg.sender.transfer(amount);
     balance[msg.sender] -= amount;
-    balance[address(this)] -= amount;
     emit Withdraw(msg.sender, amount);
   }
 
-  function isConfirmed(uint transactionId)
-  public constant returns (bool) {
-    uint count = 0;
-    for (uint i=0; i<directors.length; i++) {
-      if (confirmations[transactionId][directors[i]])
-        count += 1;
-      if (count == required)
-        return true;
-    }
-  }
-
-  function sumbitRequest(address destination, uint value, bytes data)
+  function submitRequest(address destination, uint value, bytes data)
   public returns (uint transactionId){
     require(isMember[msg.sender]);
     transactionId = addTransaction(destination, value, data);
-    confirmTransaction(transactionId);
   }
 
   function confirmTransaction(uint transactionId) public {
@@ -162,6 +151,23 @@ contract Cooperatives {
   }
 
   /* View Functions */
+  function getDirectors()
+  public view returns (address[]) {
+      return directors;
+  }
+
+  function isConfirmed(uint transactionId)
+  public view returns (bool)  {
+    uint count = 0;
+    for (uint i=0; i<directors.length; i++) {
+      if (confirmations[transactionId][directors[i]])
+        count += 1;
+      if (count == required)
+        return true;
+    }
+    return false;
+  }
+
   function getCoopName()
   public view returns (string) {
     return name;
@@ -175,11 +181,6 @@ contract Cooperatives {
   function getCoopDescription()
   public view returns (string) {
     return description;
-  }
-
-  function getCoopBalance()
-  public view returns (uint) {
-    return balance[address(this)];
   }
 
   function getConfirmationCount(uint transactionId)
